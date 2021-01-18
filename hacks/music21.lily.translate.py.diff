@@ -1,0 +1,4 @@
+2430,2432d2429
+<         # luca's hack
+<         if format == 'png':
+<             lilyCommand += '-dresolution=300 '

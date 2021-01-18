@@ -1,0 +1,6 @@
+490,492c490
+<         if keywords['my_show']:
+<             self.launch(returnedFilePath, fmt=outFormat, app=app, launchKey=launchKey)
+<         keywords['my_path_grabber'].set_path(returnedFilePath)
+---
+>         self.launch(returnedFilePath, fmt=outFormat, app=app, launchKey=launchKey)
