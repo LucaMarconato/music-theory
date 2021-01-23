@@ -27,6 +27,8 @@ s = stream.Stream()
 s.append(n1)
 s.append(n2)
 
+import os
+RUNNING_IN_PYCHARM = int(os.getenv('PYCHARM_HOSTED'))
 
 # s.show('lily.svg')
 # s.write('', fp='/Users/macbook/programming/python/music_theory/')
@@ -97,9 +99,10 @@ def chord_training(chord_type, current_stack):
     green_x = x.copy()
     green_x[black_pixels_0, black_pixels_1, :] = [0, 255, 0]
     ax = plt.gca()
-    # plt.figure()
-    plt.ion()
-    plt.show()
+    if not RUNNING_IN_PYCHARM:
+        # plt.figure()
+        plt.ion()
+        plt.show()
     plt.box(False)
     ax.set_xticks([])
     ax.set_yticks([])
@@ -117,14 +120,15 @@ def chord_training(chord_type, current_stack):
         current_stack_no_octave = set([c % 12 for c in clone_stack])
         # print(current_stack_no_octave, correct_pitches)
         if len(clone_stack) > 0:
-            print('ehila')
-            pass
+            time.sleep(0)
+            # print('ehila')
         if clone_stack == correct_pitches:
-            ax.imshow(green_x)
-            plt.draw()
-            plt.pause(0.001)
+            if not RUNNING_IN_PYCHARM:
+                ax.imshow(green_x)
+                plt.draw()
+                plt.pause(0.001)
+            rint("CORRECT!")
             time.sleep(1)
-            print("CORRECT!")
             break
         # else:
         #     print('NOT CORRECT')
