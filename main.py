@@ -28,7 +28,13 @@ s.append(n1)
 s.append(n2)
 
 import os
-RUNNING_IN_PYCHARM = int(os.getenv('PYCHARM_HOSTED'))
+
+a = os.getenv('PYCHARM_HOSTED')
+if a is not None:
+    RUNNING_IN_PYCHARM = int(a)
+else:
+    RUNNING_IN_PYCHARM = False
+
 
 # s.show('lily.svg')
 # s.write('', fp='/Users/macbook/programming/python/music_theory/')
@@ -36,7 +42,41 @@ RUNNING_IN_PYCHARM = int(os.getenv('PYCHARM_HOSTED'))
 # c_minor.show('test.svg')
 
 
-def get_minor_chors(random_inversion=True):
+def get_major_chords(random_inversion=True):
+    chords_description = [
+        ['C4', 'E4', 'G4'],
+        ['C4#', 'E4#', 'G4#'],
+        ['D4-', 'F4', 'A4-'],
+        ['D4', 'F4#', 'A4'],
+        ['D4#', 'F4##', 'A4#'],
+        ['E4-', 'G4', 'B4-'],
+        ['E4', 'G4#', 'B4'],
+        ['F4', 'A4', 'C5'],
+        ['F4#', 'A4#', 'C5#'],
+        ['G4-', 'B4-', 'D5-'],
+        ['G4', 'B4', 'D5'],
+        ['G4#', 'B4#', 'D5#'],
+        ['A4-', 'C5', 'E5-'],
+        ['A4', 'C5#', 'E5'],
+        ['A4#', 'C5##', 'E5#'],
+        ['B4-', 'D5', 'F5'],
+        ['B4', 'D5#', 'F5#']
+    ]
+    chords = [chord.Chord(c) for c in chords_description]
+    for c in chords:
+        if not random_inversion:
+            c.inversion(0)
+        else:
+            c.inversion(random.randint(0, 2))
+    for (root, _, _), c in zip(chords_description, chords):
+        should_be = f'{root[0] + root[2:].replace("-", "b")}-major triad'
+        assert c.pitchedCommonName == should_be
+    return chords
+
+
+
+
+def get_minor_chords(random_inversion=True):
     chords_description = [
         ["C4", "E4-", "G4"],
         ["C4#", "E4", "G4#"],
@@ -71,7 +111,8 @@ def get_minor_chors(random_inversion=True):
     return chords
 
 
-minor_chords = get_minor_chors()
+major_chords = get_major_chords()
+minor_chords = get_minor_chords()
 
 
 def chord_training(chord_type, current_stack):
@@ -80,7 +121,8 @@ def chord_training(chord_type, current_stack):
     # my_chord = chord.fromIntervalVector(iv)
     # print(type(my_chord))
     # print(my_chord.pitchedCommonName)
-    random_chord = random.choice(minor_chords)
+    # print(chord_type)
+    random_chord = random.choice(minor_chords + major_chords)
 
     # chord.chordTables.Chor(address)
 
@@ -127,7 +169,7 @@ def chord_training(chord_type, current_stack):
                 ax.imshow(green_x)
                 plt.draw()
                 plt.pause(0.001)
-            rint("CORRECT!")
+            print("CORRECT!")
             time.sleep(1)
             break
         # else:
